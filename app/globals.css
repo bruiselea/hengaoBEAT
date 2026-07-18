@@ -84,6 +84,8 @@ button { color: inherit; }
 .keyboard-note { margin: 16px 0 12px; color: rgba(244,241,232,.44); font-size: 10px; text-align: center; }
 kbd { display: inline-grid; place-items: center; width: 19px; height: 19px; margin-left: 5px; border: 1px solid rgba(255,255,255,.2); background: #1e2022; color: var(--paper); font: 700 10px var(--font-display), sans-serif; }
 .error-note { margin: 0 0 10px; color: #ff998c; font-size: 11px; line-height: 1.6; }
+.sound-check { width: 100%; min-height: 42px; margin: 0 0 10px; border: 1px solid rgba(216,255,47,.55); background: rgba(216,255,47,.07); color: var(--lime); font: 800 12px var(--font-display), sans-serif; letter-spacing: .08em; cursor: pointer; }
+.sound-check:active { background: var(--lime); color: var(--ink); }
 
 .countdown { position: absolute; inset: 0; z-index: 4; display: grid; place-content: center; justify-items: center; background: rgba(9,10,11,.4); backdrop-filter: blur(3px); }
 .countdown small { color: var(--lime); font: 800 15px var(--font-display), sans-serif; letter-spacing: .22em; }

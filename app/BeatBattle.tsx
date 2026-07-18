@@ -90,18 +90,31 @@ class BeatAudio {
   master: GainNode | null = null;
 
   async start() {
+    const audioNavigator = navigator as Navigator & { audioSession?: { type: string } };
+    if (audioNavigator.audioSession) audioNavigator.audioSession.type = "playback";
     if (!this.context) {
-      this.context = new AudioContext();
+      this.context = new AudioContext({ latencyHint: "interactive" });
       this.master = this.context.createGain();
       this.master.gain.value = 0.72;
       this.master.connect(this.context.destination);
     }
     await this.context.resume();
+
+    // Unlock later face-triggered sounds from the initial tap on iOS Safari.
+    const unlockBuffer = this.context.createBuffer(1, 1, this.context.sampleRate);
+    const unlockSource = this.context.createBufferSource();
+    unlockSource.buffer = unlockBuffer;
+    unlockSource.connect(this.master!);
+    unlockSource.start();
   }
 
   hit(type: Gesture, power = 0.8) {
     if (!this.context || !this.master) return;
     const ctx = this.context;
+    if (ctx.state !== "running") {
+      void ctx.resume().then(() => this.hit(type, power));
+      return;
+    }
     const now = ctx.currentTime;
     if (type === "kick") {
       const oscillator = ctx.createOscillator();
@@ -132,6 +145,10 @@ class BeatAudio {
 
   click(accent: boolean) {
     if (!this.context || !this.master) return;
+    if (this.context.state !== "running") {
+      void this.context.resume().then(() => this.click(accent));
+      return;
+    }
     const now = this.context.currentTime;
     const oscillator = this.context.createOscillator();
     const gain = this.context.createGain();
@@ -333,6 +350,14 @@ export function BeatBattle() {
 
   const showFinal = useCallback(() => setPhase("final"), [setPhase]);
 
+  const soundCheck = useCallback(async () => {
+    await audioRef.current.start();
+    audioRef.current.hit("kick", 1);
+    window.setTimeout(() => audioRef.current.hit("snare", 1), 180);
+    window.setTimeout(() => audioRef.current.hit("hat", 1), 360);
+    setCameraStatus("音声OK！ KICK・SNARE・HI-HAT");
+  }, []);
+
   const resetBattle = useCallback(() => {
     setPerformances([]);
     setLastScore(null);
@@ -411,6 +436,7 @@ export function BeatBattle() {
               })}
               <p className="keyboard-note">カメラなし：<kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> キーでも演奏</p>
               {error && <p className="error-note">{error}</p>}
+              {phase === "camera" && <button className="sound-check" onClick={soundCheck}>🔊 音声テスト</button>}
               {phase === "camera" && <button className="primary-button full" onClick={startRound}>PLAYER {player} スタート <span>→</span></button>}
             </div>
           )}
