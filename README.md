@@ -8,6 +8,10 @@
 
 ![変顔BEAT対決のゲーム画面](public/hengao-beat-screenshot.jpg)
 
+### Battle Result
+
+![変顔BEAT対決の最終結果画面](public/hengao-beat-result.png)
+
 A clean full-stack starter running on
 [vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
 Drizzle support.
