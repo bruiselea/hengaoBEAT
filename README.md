@@ -2,6 +2,12 @@
 
 ![変顔BEAT対決 — Your face is the instrument](public/hengao-beat-cover.png)
 
+## Live Demo
+
+[変顔BEAT対決をプレイ](https://hengao-beat-battle.natuna.chatgpt.site)
+
+![変顔BEAT対決のゲーム画面](public/hengao-beat-screenshot.png)
+
 A clean full-stack starter running on
 [vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
 Drizzle support.
