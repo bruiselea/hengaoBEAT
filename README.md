@@ -1,5 +1,7 @@
 # vinext-starter
 
+![変顔BEAT対決 — Your face is the instrument](public/hengao-beat-cover.png)
+
 A clean full-stack starter running on
 [vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
 Drizzle support.
